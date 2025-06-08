@@ -82,7 +82,7 @@
 
     map.on('load', async () => {
       try {
-        const res = await fetch('https://script.google.com/macros/s/AKfycbw6AoOlCDyiF6e3GFTmZ3YkkVMW27_DmUlmDmWfFROwGWzkxzuOwDSmDPcFXbEzSVfktg/exec');
+        const res = await fetch('https://script.google.com/macros/s/AKfycbz5_deTUbnc2jzyyOAMoxiybu_P_hAfO-u4C5w7Sghsz8vlZawizqPCsOYBCMqxbiAKVA/exec');
         const data = await res.json();
 
         map.addSource('states', { type: 'geojson', data });
