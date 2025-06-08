@@ -14,7 +14,7 @@
     }
     #map {
       position: absolute;
-      top: 180px;
+      top: 340px;
       bottom: 0;
       width: 100%;
     }
@@ -37,17 +37,33 @@
       margin-bottom: 10px;
       text-align: center;
     }
-    .candidate-image-container {
+    .region-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
-      margin-bottom: 10px;
+      gap: 20px;
+      margin-bottom: 15px;
       max-width: 1000px;
     }
+    .region-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .region-label {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .candidate-image-container {
+      display: flex;
+      gap: 10px;
+    }
     .candidate-image {
-      width: 70px;
-      height: 70px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid white;
@@ -57,14 +73,56 @@
 <body>
   <div id="header">
     <div class="title">1988 Live Election Map (Subset)</div>
-    <div class="candidate-image-container">
-      <img src="images/George-H-W-Bush.jpg" alt="George H. W. Bush" class="candidate-image">
-      <img src="images/Bill_Clinton.jpg" alt="Bill Clinton" class="candidate-image">
-      <img src="images/Ronald_Reagan.jpg" alt="Ronald Reagan" class="candidate-image">
-      <img src="images/Michael_Dukakis.jpg" alt="Michael Dukakis" class="candidate-image">
-      <img src="images/Ross_Perot.jpg" alt="Ross Perot" class="candidate-image">
-      <img src="images/Jesse_Jackson.jpg" alt="Jesse Jackson" class="candidate-image">
-      <img src="images/Pat_Robertson.jpg" alt="Pat Robertson" class="candidate-image">
+    <div class="region-container">
+      <div class="region-group">
+        <div class="region-label">Columbia</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_columbia.jpg" alt="Candidate 1 Columbia" class="candidate-image">
+          <img src="images/candidate2_columbia.jpg" alt="Candidate 2 Columbia" class="candidate-image">
+        </div>
+      </div>
+      <div class="region-group">
+        <div class="region-label">Cambridge</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_cambridge.jpg" alt="Candidate 1 Cambridge" class="candidate-image">
+          <img src="images/candidate2_cambridge.jpg" alt="Candidate 2 Cambridge" class="candidate-image">
+        </div>
+      </div>
+      <div class="region-group">
+        <div class="region-label">Superior</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_superior.jpg" alt="Candidate 1 Superior" class="candidate-image">
+          <img src="images/candidate2_superior.jpg" alt="Candidate 2 Superior" class="candidate-image">
+        </div>
+      </div>
+      <div class="region-group">
+        <div class="region-label">Heartland</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_heartland.jpg" alt="Candidate 1 Heartland" class="candidate-image">
+          <img src="images/candidate2_heartland.jpg" alt="Candidate 2 Heartland" class="candidate-image">
+        </div>
+      </div>
+      <div class="region-group">
+        <div class="region-label">Yellowstone</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_yellowstone.jpg" alt="Candidate 1 Yellowstone" class="candidate-image">
+          <img src="images/candidate2_yellowstone.jpg" alt="Candidate 2 Yellowstone" class="candidate-image">
+        </div>
+      </div>
+      <div class="region-group">
+        <div class="region-label">Austin</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_austin.jpg" alt="Candidate 1 Austin" class="candidate-image">
+          <img src="images/candidate2_austin.jpg" alt="Candidate 2 Austin" class="candidate-image">
+        </div>
+      </div>
+      <div class="region-group">
+        <div class="region-label">Phoenix</div>
+        <div class="candidate-image-container">
+          <img src="images/candidate1_phoenix.jpg" alt="Candidate 1 Phoenix" class="candidate-image">
+          <img src="images/candidate2_phoenix.jpg" alt="Candidate 2 Phoenix" class="candidate-image">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -82,7 +140,7 @@
 
     map.on('load', async () => {
       try {
-        const res = await fetch('https://script.google.com/macros/s/AKfycbz5_deTUbnc2jzyyOAMoxiybu_P_hAfO-u4C5w7Sghsz8vlZawizqPCsOYBCMqxbiAKVA/exec');
+        const res = await fetch('https://script.google.com/macros/s/AKfycbwZ89OQ6GCB7z_7BUvvft93vHOxmAGb8DzNGuQJJORrD2aiZd1NxWFIx-8n8xbcymukxQ/exec');
         const data = await res.json();
 
         map.addSource('states', { type: 'geojson', data });
@@ -95,10 +153,10 @@
             'fill-color': [
               'match',
               ['get', 'status'],
-              'GOP Win', '#d12c0f',
-              'DEM Win', '#0e47e6',
-              'Lean GOP', '#f4a6a6',
-              'Lean DEM', '#a6c8f4',
+              'Candidate1 Win', '#d12c0f',
+              'Candidate2 Win', '#0e47e6',
+              'Lean Candidate1', '#f4a6a6',
+              'Lean Candidate2', '#a6c8f4',
               'Uncalled', '#cccccc',
               '#ffffff'
             ],
@@ -118,20 +176,24 @@
 
         map.on('click', 'states-fill', (e) => {
           const p = e.features[0].properties;
-          const gop_votes = Math.round(Number(p.votes_gop || 0));
-          const dem_votes = Math.round(Number(p.votes_dem || 0));
-          const total = gop_votes + dem_votes;
-          const perc_gop = total > 0 ? ((gop_votes / total) * 100).toFixed(1) : 0;
-          const perc_dem = total > 0 ? ((dem_votes / total) * 100).toFixed(1) : 0;
+          const candidate1_votes = Math.round(Number(p.votes_candidate1 || 0));
+          const candidate2_votes = Math.round(Number(p.votes_candidate2 || 0));
+          const total = candidate1_votes + candidate2_votes;
+          const perc_candidate1 = total > 0 ? ((candidate1_votes / total) * 100).toFixed(1) : 0;
+          const perc_candidate2 = total > 0 ? ((candidate2_votes / total) * 100).toFixed(1) : 0;
+          const candidate1_name = p.candidate1 || 'Candidate 1';
+          const candidate2_name = p.candidate2 || 'Candidate 2';
+          const region = p.region || 'Unknown Region';
           const winner = p.winner || 'Uncalled';
+          const state_name = p.NAME || 'Unknown State';
 
           new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(`
-              <strong>${p.NAME}</strong><br/>
-              <b>Electoral Votes:</b> ${p.electoral_votes || 0}<br/>
-              <b><span style="color: #d12c0f;">${p.gop_candidate}:</span></b> ${gop_votes.toLocaleString()} (${perc_gop}%)<br/>
-              <b><span style="color: #0e47e6;">${p.dem_candidate}:</span></b> ${dem_votes.toLocaleString()} (${perc_dem}%)<br/>
+              <strong>${region}</strong><br/>
+              <strong>${state_name}</strong><br/>
+              <b><span style="color: #d12c0f;">${candidate1_name}:</span></b> ${candidate1_votes.toLocaleString()} (${perc_candidate1}%)<br/>
+              <b><span style="color: #0e47e6;">${candidate2_name}:</span></b> ${candidate2_votes.toLocaleString()} (${perc_candidate2}%)<br/>
               <b>Winner:</b> ${winner}
             `)
             .addTo(map);
