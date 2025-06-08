@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>1990 Live Gubernatorial Election Map </title>
+  <title>1990 Live Gubernatorial Election Map</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet" />
@@ -14,7 +14,7 @@
     }
     #map {
       position: absolute;
-      top: 150px; /* Adjusted to match header height */
+      top: 180px;
       bottom: 0;
       width: 100%;
     }
@@ -30,7 +30,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 150px; /* Fixed height to prevent white space */
+      height: 180px;
       overflow: hidden;
     }
     .title {
@@ -70,6 +70,10 @@
       object-fit: cover;
       border: 2px solid white;
     }
+    .reporting-text {
+      font-size: 14px;
+      color: #cccccc;
+    }
   </style>
 </head>
 <body>
@@ -82,6 +86,7 @@
           <img src="images/candidate1_columbia.jpg" alt="Candidate 1 Columbia" class="candidate-image">
           <img src="images/candidate2_columbia.jpg" alt="Candidate 2 Columbia" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-columbia">Reporting: 0%</div>
       </div>
       <div class="region-group">
         <div class="region-label">Cambridge</div>
@@ -89,6 +94,7 @@
           <img src="images/candidate1_cambridge.jpg" alt="Candidate 1 Cambridge" class="candidate-image">
           <img src="images/candidate2_cambridge.jpg" alt="Candidate 2 Cambridge" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-cambridge">Reporting: 0%</div>
       </div>
       <div class="region-group">
         <div class="region-label">Superior</div>
@@ -96,6 +102,7 @@
           <img src="images/candidate1_superior.jpg" alt="Candidate 1 Superior" class="candidate-image">
           <img src="images/candidate2_superior.jpg" alt="Candidate 2 Superior" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-superior">Reporting: 0%</div>
       </div>
       <div class="region-group">
         <div class="region-label">Heartland</div>
@@ -103,6 +110,7 @@
           <img src="images/candidate1_heartland.jpg" alt="Candidate 1 Heartland" class="candidate-image">
           <img src="images/candidate2_heartland.jpg" alt="Candidate 2 Heartland" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-heartland">Reporting: 0%</div>
       </div>
       <div class="region-group">
         <div class="region-label">Yellowstone</div>
@@ -110,6 +118,7 @@
           <img src="images/candidate1_yellowstone.jpg" alt="Candidate 1 Yellowstone" class="candidate-image">
           <img src="images/candidate2_yellowstone.jpg" alt="Candidate 2 Yellowstone" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-yellowstone">Reporting: 0%</div>
       </div>
       <div class="region-group">
         <div class="region-label">Austin</div>
@@ -117,6 +126,7 @@
           <img src="images/candidate1_austin.jpg" alt="Candidate 1 Austin" class="candidate-image">
           <img src="images/candidate2_austin.jpg" alt="Candidate 2 Austin" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-austin">Reporting: 0%</div>
       </div>
       <div class="region-group">
         <div class="region-label">Phoenix</div>
@@ -124,6 +134,7 @@
           <img src="images/candidate1_phoenix.jpg" alt="Candidate 1 Phoenix" class="candidate-image">
           <img src="images/candidate2_phoenix.jpg" alt="Candidate 2 Phoenix" class="candidate-image">
         </div>
+        <div class="reporting-text" id="reporting-phoenix">Reporting: 0%</div>
       </div>
     </div>
   </div>
@@ -140,7 +151,7 @@
       zoom: 3
     });
 
-    // Define region-specific candidates
+    // Define region-specific candidates (fallback)
     const regionCandidates = {
       columbia: { candidate1: 'George Bush', candidate2: 'Michael Dukakis' },
       cambridge: { candidate1: 'Ann Richards', candidate2: 'Paul Simon' },
@@ -154,7 +165,25 @@
     map.on('load', async () => {
       try {
         const res = await fetch('https://script.google.com/macros/s/AKfycbwZ89OQ6GCB7z_7BUvvft93vHOxmAGb8DzNGuQJJORrD2aiZd1NxWFIx-8n8xbcymukxQ/exec');
+        if (!res.ok) {
+          throw new Error(`Fetch failed with status ${res.status}`);
+        }
         const data = await res.json();
+        console.log('Fetched GeoJSON:', data); // Log for debugging
+
+        if (data.error) {
+          throw new Error(`Apps Script error: ${data.error}`);
+        }
+
+        // Update header with reporting values
+        const reporting = data.properties?.reporting || {};
+        document.getElementById('reporting-columbia').textContent = `Reporting: ${reporting['Columbia'] || '0%'}`;
+        document.getElementById('reporting-cambridge').textContent = `Reporting: ${reporting['Cambridge'] || '0%'}`;
+        document.getElementById('reporting-superior').textContent = `Reporting: ${reporting['Superior'] || '0%'}`;
+        document.getElementById('reporting-heartland').textContent = `Reporting: ${reporting['Heartland'] || '0%'}`;
+        document.getElementById('reporting-yellowstone').textContent = `Reporting: ${reporting['Yellowstone'] || '0%'}`;
+        document.getElementById('reporting-austin').textContent = `Reporting: ${reporting['Austin'] || '0%'}`;
+        document.getElementById('reporting-phoenix').textContent = `Reporting: ${reporting['Phoenix'] || '0%'}`;
 
         map.addSource('states', { type: 'geojson', data });
 
@@ -166,10 +195,10 @@
             'fill-color': [
               'match',
               ['get', 'status'],
-              'Red Win', '#d12c0f',
-              'Blue Win', '#0e47e6',
-              'Lean Red', '#f4a6a6',
-              'Lean Blue', '#a6c8f4',
+              'GOP Win', '#d12c0f',
+              'DEM Win', '#0e47e6',
+              'Lean GOP', '#f4a6a6',
+              'Lean DEM', '#a6c8f4',
               'Uncalled', '#cccccc',
               '#ffffff'
             ],
@@ -189,23 +218,24 @@
 
         map.on('click', 'states-fill', (e) => {
           const p = e.features[0].properties;
-          const candidate1_votes = Math.round(Number(p.votes_candidate1 || 0));
-          const candidate2_votes = Math.round(Number(p.votes_candidate2 || 0));
+          const candidate1_votes = Math.round(Number(p.votes_gop || 0));
+          const candidate2_votes = Math.round(Number(p.votes_dem || 0));
           const total = candidate1_votes + candidate2_votes;
           const perc_candidate1 = total > 0 ? ((candidate1_votes / total) * 100).toFixed(1) : 0;
           const perc_candidate2 = total > 0 ? ((candidate2_votes / total) * 100).toFixed(1) : 0;
           const region = p.region || 'Unknown Region';
           const regionKey = region.toLowerCase().replace(/\s+/g, '');
-          // Use predefined candidates or fall back to GeoJSON if available
-          const candidates = regionCandidates[regionKey] || { candidate1: 'Unknown Red', candidate2: 'Unknown Blue' };
-          const candidate1_name = p[`candidate1_${regionKey}`] || candidates.candidate1;
-          const candidate2_name = p[`candidate2_${regionKey}`] || candidates.candidate2;
+          const candidates = regionCandidates[regionKey] || { candidate1: 'Unknown GOP', candidate2: 'Unknown DEM' };
+          const candidate1_name = p.gop_candidate || candidates.candidate1;
+          const candidate2_name = p.dem_candidate || candidates.candidate2;
           const winner = p.winner || 'Uncalled';
+          const reporting = p.reporting || '0%';
 
           new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(`
               <strong>${region}</strong><br/>
+              <b>Reporting:</b> ${reporting}<br/>
               <b><span style="color: #d12c0f;">${candidate1_name}:</span></b> ${candidate1_votes.toLocaleString()} (${perc_candidate1}%)<br/>
               <b><span style="color: #0e47e6;">${candidate2_name}:</span></b> ${candidate2_votes.toLocaleString()} (${perc_candidate2}%)<br/>
               <b>Winner:</b> ${winner}
@@ -222,7 +252,7 @@
 
       } catch (err) {
         console.error('Map load error:', err);
-        document.getElementById('map').innerHTML = '<p style="color:red;text-align:center;">Map failed to load.</p>';
+        document.getElementById('map').innerHTML = '<p style="color:red;text-align:center;">Map failed to load: ' + err.message + '</p>';
       }
     });
   </script>
