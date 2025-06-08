@@ -62,6 +62,7 @@
     .candidate-image-container {
       display: flex;
       gap: 10px;
+      align-items: center;
     }
     .candidate-image {
       width: 50px;
@@ -69,6 +70,11 @@
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid white;
+    }
+    .candidate-name {
+      font-size: 12px;
+      text-align: center;
+      color: white;
     }
   </style>
 </head>
@@ -79,50 +85,92 @@
       <div class="region-group">
         <div class="region-label">Columbia</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_columbia.jpg" alt="Candidate 1 Columbia" class="candidate-image">
-          <img src="images/candidate2_columbia.jpg" alt="Candidate 2 Columbia" class="candidate-image">
+          <div>
+            <img src="images/candidate1_columbia.jpg" alt="George Bush Columbia" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_columbia.jpg" alt="Michael Dukakis Columbia" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
       <div class="region-group">
         <div class="region-label">Cambridge</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_cambridge.jpg" alt="Candidate 1 Cambridge" class="candidate-image">
-          <img src="images/candidate2_cambridge.jpg" alt="Candidate 2 Cambridge" class="candidate-image">
+          <div>
+            <img src="images/candidate1_cambridge.jpg" alt="George Bush Cambridge" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_cambridge.jpg" alt="Michael Dukakis Cambridge" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
       <div class="region-group">
         <div class="region-label">Superior</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_superior.jpg" alt="Candidate 1 Superior" class="candidate-image">
-          <img src="images/candidate2_superior.jpg" alt="Candidate 2 Superior" class="candidate-image">
+          <div>
+            <img src="images/candidate1_superior.jpg" alt="George Bush Superior" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_superior.jpg" alt="Michael Dukakis Superior" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
       <div class="region-group">
         <div class="region-label">Heartland</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_heartland.jpg" alt="Candidate 1 Heartland" class="candidate-image">
-          <img src="images/candidate2_heartland.jpg" alt="Candidate 2 Heartland" class="candidate-image">
+          <div>
+            <img src="images/candidate1_heartland.jpg" alt="George Bush Heartland" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_heartland.jpg" alt="Michael Dukakis Heartland" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
       <div class="region-group">
         <div class="region-label">Yellowstone</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_yellowstone.jpg" alt="Candidate 1 Yellowstone" class="candidate-image">
-          <img src="images/candidate2_yellowstone.jpg" alt="Candidate 2 Yellowstone" class="candidate-image">
+          <div>
+            <img src="images/candidate1_yellowstone.jpg" alt="George Bush Yellowstone" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_yellowstone.jpg" alt="Michael Dukakis Yellowstone" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
       <div class="region-group">
         <div class="region-label">Austin</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_austin.jpg" alt="Candidate 1 Austin" class="candidate-image">
-          <img src="images/candidate2_austin.jpg" alt="Candidate 2 Austin" class="candidate-image">
+          <div>
+            <img src="images/candidate1_austin.jpg" alt="George Bush Austin" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_austin.jpg" alt="Michael Dukakis Austin" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
       <div class="region-group">
         <div class="region-label">Phoenix</div>
         <div class="candidate-image-container">
-          <img src="images/candidate1_phoenix.jpg" alt="Candidate 1 Phoenix" class="candidate-image">
-          <img src="images/candidate2_phoenix.jpg" alt="Candidate 2 Phoenix" class="candidate-image">
+          <div>
+            <img src="images/candidate1_phoenix.jpg" alt="George Bush Phoenix" class="candidate-image">
+            <div class="candidate-name">George Bush</div>
+          </div>
+          <div>
+            <img src="images/candidate2_phoenix.jpg" alt="Michael Dukakis Phoenix" class="candidate-image">
+            <div class="candidate-name">Michael Dukakis</div>
+          </div>
         </div>
       </div>
     </div>
@@ -183,8 +231,8 @@
           const total = candidate1_votes + candidate2_votes;
           const perc_candidate1 = total > 0 ? ((candidate1_votes / total) * 100).toFixed(1) : 0;
           const perc_candidate2 = total > 0 ? ((candidate2_votes / total) * 100).toFixed(1) : 0;
-          const candidate1_name = p.candidate1 || 'Candidate 1';
-          const candidate2_name = p.candidate2 || 'Candidate 2';
+          const candidate1_name = p.candidate1 || 'George Bush';
+          const candidate2_name = p.candidate2 || 'Michael Dukakis';
           const region = p.region || 'Unknown Region';
           const winner = p.winner || 'Uncalled';
 
